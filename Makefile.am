@@ -146,6 +146,8 @@ CLEANFILES = $(font_DATA) $(BUILT_BDF_FILES)
 
 EXTRA_DIST = $(BDF_FILES) autogen.sh
 
+all-local: $(BUILT_BDF_FILES) $(font_DATA)
+
 install-data-hook:
 	@rm -f $(DESTDIR)$(fontdir)/fonts.scale
 	$(MKFONTSCALE) $(DESTDIR)$(fontdir)
