@@ -10,3 +10,6 @@ configure
 install-sh
 missing
 *~
+font-bh-lucidatypewriter-75dpi-*.tar.*
+ChangeLog
+tags
