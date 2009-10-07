@@ -26,43 +26,25 @@ AC_INIT(font-bh-lucidatypewriter-75dpi, [1.0.0], [https://bugs.freedesktop.org/e
 AM_INIT_AUTOMAKE([foreign dist-bzip2])
 AM_MAINTAINER_MODE
 
-# Require xorg-macros: XORG_CHANGELOG
-m4_ifndef([XORG_MACROS_VERSION], [AC_FATAL([must install xorg-macros 1.2 or later before running autoconf/autogen])])
-XORG_MACROS_VERSION(1.2)
+# Require xorg-macros: XORG_DEFAULT_OPTIONS
+m4_ifndef([XORG_MACROS_VERSION],
+	  [m4_fatal([must install xorg-macros 1.3 or later before running autoconf/autogen])])
+XORG_MACROS_VERSION(1.3)
+XORG_DEFAULT_OPTIONS
+
 AC_PROG_INSTALL
 
-AC_PATH_PROG(BDFTOPCF, bdftopcf)
-AC_PATH_PROG(UCS2ANY, ucs2any)
-AC_PATH_PROG(MKFONTSCALE, mkfontscale)
-if test x"$MKFONTSCALE" = x; then
-	AC_MSG_ERROR([mkfontscale is required to build bh-lucidatypewriter-75dpi fonts.])
-fi
-AC_PATH_PROG(MKFONTDIR, mkfontdir)
-if test x"$MKFONTDIR" = x; then
-	AC_MSG_ERROR([mkfontdir is required to build bh-lucidatypewriter-75dpi fonts.])
-fi
+# Require X.Org's font util macros 1.1 or later
+m4_ifndef([XORG_FONT_MACROS_VERSION],
+	  [m4_fatal([must install X.Org font-util 1.1 or later before running autoconf/autogen])])
+XORG_FONT_MACROS_VERSION(1.1)
 
-fontdir=${libdir}/X11/fonts/75dpi
-AC_ARG_WITH(fontdir, AC_HELP_STRING([--with-fontdir=<pathname>],
-	[Path to install fonts]), [fontdir="$withval"])
-FONTDIR="$fontdir"
-AC_SUBST(FONTDIR)
+XORG_FONTDIR([75dpi])
+XORG_FONT_BDF_UTILS
+XORG_FONT_UCS2ANY
 
-PKG_CHECK_MODULES(MAPS, [fontutil])
-MAPFILES_PATH=$(pkg-config --variable=mapdir fontutil)
-AC_SUBST(MAPFILES_PATH)
-
-XORG_FONT_CHECK_ISO8859_1
-XORG_FONT_CHECK_ISO8859_2
-XORG_FONT_CHECK_ISO8859_3
-XORG_FONT_CHECK_ISO8859_4
-XORG_FONT_CHECK_ISO8859_9
-XORG_FONT_CHECK_ISO8859_10
-XORG_FONT_CHECK_ISO8859_13
-XORG_FONT_CHECK_ISO8859_14
-XORG_FONT_CHECK_ISO8859_15
-
-XORG_RELEASE_VERSION
-XORG_CHANGELOG
+XORG_FONT_CHECK_ENCODING_LIST([ISO8859-1 ISO8859-2 ISO8859-3 ISO8859-4
+			       ISO8859-9 ISO8859-10 ISO8859-13 ISO8859-14
+			       ISO8859-15])
 
 AC_OUTPUT([Makefile])
